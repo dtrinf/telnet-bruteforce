@@ -1,4 +1,4 @@
-	#!/usr/bin/env python
+#!/usr/bin/env python
 __author__ = "David Trigo Chavez"
 __copyright__ = "Copyright 2016, "
 __credits__ = ["David Trigo Chavez"]
@@ -69,7 +69,7 @@ class AutoTelnet:
 				while self.L_prompt in match.string and not self.excepcion and not self.user_found:
 					if self.test_counter >= len(string.lowercase):
 						self.connexion()
-						self.test_counter =0
+						self.test_counter = 0
 					try:
 						self.user = st.next()
 						print self.user
@@ -86,8 +86,8 @@ class AutoTelnet:
 			except:
 				pass
 					
+		print self.user
 		#pass bruteforce
-		self.connexion()	
 		self.test_counter =0	
 		for i in range(len(string.letters+string.digits)):
 			st = self.generate(string.letters+string.digits,i+1)
@@ -108,7 +108,7 @@ class AutoTelnet:
                                                 self.connexion()
 						response = self.telnet.read_until(login_prompt, 1)
 						self.telnet.write("%s\n" %self.user)
-                                                self.test_counter =0
+                                                self.test_counter = 0
 					try:
 						self.passwd = st.next()
 						print self.passwd
